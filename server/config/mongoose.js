@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-		crypto = require('crypto');
+		userModel = require('../models/User');
 
 module.exports = function(config) {
 	//mongo ds021299.mlab.com:21299/multivision -u webmaster -p multivision
@@ -12,58 +12,5 @@ module.exports = function(config) {
 		console.log('multivision db opened');
 	});
 
-	var userSchema = mongoose.Schema({
-		firstName: String,
-		lastName: String,
-		username: String,
-		salt: String,
-		hashed_pwd: String,
-		roles: [String]
-	});
-
-	userSchema.methods = {
-		authenticate: function(passwordToMatch) {
-			return hashPwd(this.salt, passwordToMatch) === this.hashed_pwd;
-		}
-	};
-	var User = mongoose.model('User', userSchema);
-
-	User.find({}).exec(function (err, collection) {
-		if(collection.length === 0) {
-			var salt, hash;
-			salt = createSalt();
-			hash = hashPwd(salt, 'sshaikh');
-			User.create({firstName:'Shams', lastName:'Shaikh', username:'sshaikh', salt:salt, hashed_pwd:hash, roles:['admin']});
-			salt = createSalt();
-			hash = hashPwd(salt, 'smohite');
-			User.create({firstName:'Snehal', lastName:'Mohite', username:'smohite', salt:salt, hashed_pwd:hash, roles:[]});
-			salt = createSalt();
-			hash = hashPwd(salt, 'ndeshpande');
-			User.create({firstName:'Neha', lastName:'Deshpande', username:'ndeshpande', salt:salt, hashed_pwd:hash});
-		}
-	})
-}
-
-function createSalt() {
-	return crypto.randomBytes(128).toString('base64');
-}
-
-function hashPwd(salt, pwd) {
-	var hmac = crypto.createHmac('sha1', salt);
-	return hmac.update(pwd).digest('hex');
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	userModel.createDefaultUsers();
+};

@@ -19,6 +19,11 @@
 				auth: ['Auth', function(Auth) {
 					return Auth.authForRoute('admin');
 				}]				
+			},
+			user: {				
+				auth: ['Auth', function(Auth) {
+					return Auth.authUser();
+				}]				
 			}
 		}
 
@@ -36,6 +41,15 @@
 				templateUrl: '/partials/admin/user-list',
 				controller: 'UserList',
 				resolve: roleCheck.admin
+			})
+			.when('/signup', {
+				templateUrl: '/partials/account/signup',
+				controller: 'SignUp'
+			})
+			.when('/profile', {
+				templateUrl: '/partials/account/profile',
+				controller: 'Profile',
+				resolve: roleCheck.user
 			});
 	}
 

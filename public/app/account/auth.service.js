@@ -24,6 +24,36 @@
 
 				return deferred.promise;
 			},
+
+			createUser: function (data) {
+				var newUser = new mvUser(data);
+				var deferred = $q.defer();
+
+				newUser.$save().then(function() {
+					mvUser.currentUser = newUser;
+					deferred.resolve();
+				}, function(response) {
+					deferred.reject(response.data.reason);
+				});
+
+				return deferred.promise;
+			},
+
+			updateUser: function (data) {
+				var deferred = $q.defer();
+
+				var clone = angular.copy(Identity.currentUser);
+				angular.extend(clone, data);
+				clone.$update().then(function() {
+					Identity.currentUser = clone;
+					deferred.resolve();
+				}, function(response) {
+					$q.reject(response.data.reason);
+				})
+
+				return deferred.promise;
+			},
+
 			logout: function() {
 				var deferred = $q.defer();
 				$http.post('/logout', {logout: true})
@@ -36,6 +66,13 @@
 			},
 			authForRoute: function(role) {
 				if(Identity.isAuthorized(role)) {
+					return true;
+				} else {
+					return $q.reject('not authorized');
+				}
+			},
+			authUser: function() {
+				if(Identity.isAuthenticated()) {
 					return true;
 				} else {
 					return $q.reject('not authorized');
