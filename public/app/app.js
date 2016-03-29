@@ -50,7 +50,15 @@
 				templateUrl: '/partials/account/profile',
 				controller: 'Profile',
 				resolve: roleCheck.user
-			});
+			})
+			.when('/courses', {
+				templateUrl: '/partials/courses/course-list',
+				controller: 'CourseList'
+			})
+			.when('/courses/:id', {
+				templateUrl: '/partials/courses/course-details',
+				controller: 'CourseDetail'
+			})
 	}
 
 	// App Run Config

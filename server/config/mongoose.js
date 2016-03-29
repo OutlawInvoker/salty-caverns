@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-		userModel = require('../models/User');
+		userModel = require('../models/User'),
+		courseModel = require('../models/Course');
 
 module.exports = function(config) {
 	//mongo ds021299.mlab.com:21299/multivision -u webmaster -p multivision
@@ -13,4 +14,5 @@ module.exports = function(config) {
 	});
 
 	userModel.createDefaultUsers();
+	courseModel.createDefault();
 };
