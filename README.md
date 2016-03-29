@@ -2,4 +2,4 @@
 
 ##Demo
 
-<a href="https://salty-caverns-33315.herokuapp.com/">MultiVision</a>
+<a href="https://salty-caverns-33315.herokuapp.com/" target="_blank">MultiVision</a>
